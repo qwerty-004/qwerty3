@@ -1,0 +1,75 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int yylex(void);
+int yyerror(const char *s);
+%}
+
+%union {
+    int val;
+}
+
+%token <val> NUM
+%type <val> expr input
+
+%left '+' '-'
+%left '*' '/'
+
+%%
+input:
+      expr { printf("Result = %d\n", $1); }
+    ;
+
+expr:
+      expr '+' expr   { $$ = $1 + $3; }
+    | expr '-' expr   { $$ = $1 - $3; }
+    | expr '*' expr   { $$ = $1 * $3; }
+    | expr '/' expr   {
+                        if ($3 == 0) {
+                            printf("Division by zero\n");
+                            exit(0);
+                        }
+                        $$ = $1 / $3;
+                      }
+    | '(' expr ')'    { $$ = $2; }
+    | NUM             { $$ = $1; }
+    ;
+%%
+
+int main() {
+    printf("Enter expression:\n");
+    yyparse();
+    return 0;
+}
+
+int yyerror(const char *s) {
+    printf("Syntax Error\n");
+    return 0;
+}
+
+
+
+
+
+
+
+%{
+#include "y.tab.h"
+#include <stdlib.h>
+%}
+
+%%
+[0-9]+      { yylval.val = atoi(yytext); return NUM; }
+[ \t\n]     ;
+"+"         return '+';
+"-"         return '-';
+"*"         return '*';
+"/"         return '/';
+"("         return '(';
+")"         return ')';
+.           return yytext[0];
+%%
+int yywrap() {
+    return 1;
+}
