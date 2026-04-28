@@ -73,3 +73,45 @@ int yyerror(const char *s) {
 int yywrap() {
     return 1;
 }
+
+
+/*
+Execution Steps:
+
+1. Save this file as calc.y
+2. Save Lex program as calc.l
+
+3. Generate YACC files:
+   yacc -d calc.y
+
+4. Generate Lex file:
+   lex calc.l
+
+5. Compile:
+   gcc y.tab.c lex.yy.c -o calc -ll
+
+6. Run:
+   ./calc
+
+7. Sample Input:
+   (5+3)*2
+
+8. Output:
+   Result = 16
+
+Example:
+Input: 10/2+4
+Output:
+Result = 9
+
+Division by zero example:
+Input: 5/0
+Output:
+Division by zero
+
+(Alternative using flex/bison)
+   bison -d calc.y
+   flex calc.l
+   gcc calc.tab.c lex.yy.c -o calc -lfl
+   ./calc
+*/
