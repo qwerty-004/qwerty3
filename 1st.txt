@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[100];
+    int a = 0, b = 0;
+
+    printf("Enter String: ");
+    scanf("%s", str);
+
+    for(int i = 0; i < strlen(str); i++) {
+        if(str[i] == 'a') {
+            a++;
+        }
+        else if(str[i] == 'b') {
+            b++;
+        }
+        else {
+            printf("Not accepted");
+            return 0;
+        }
+    }
+
+    if(a % 3 == 0 && b % 2 == 0) {
+        printf("String Accepted");
+    }
+    else {
+        printf("String Not Accepted");
+    }
+
+    return 0;
+}

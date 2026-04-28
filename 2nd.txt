@@ -1,0 +1,68 @@
+%{
+#include<stdio.h>
+%}
+
+digit   [0-9]
+letter  [a-zA-Z]
+
+%%
+
+"if"|"else"|"while"|"for"      { printf("Keyword : %s\n", yytext); }
+
+"int"|"float"|"char"           { printf("Datatype : %s\n", yytext); }
+
+{letter}({letter}|{digit})*    { printf("Identifier : %s\n", yytext); }
+
+{digit}+                       { printf("Number : %s\n", yytext); }
+
+"+"|"-"|"*"|"/"|"="            { printf("Operator : %s\n", yytext); }
+
+";"|","|"("|")"|"{"|"}"        { printf("Special Symbol : %s\n", yytext); }
+
+[ \t\n]+                       { }
+
+.                              { printf("Unknown : %s\n", yytext); }
+
+%%
+
+int main()
+{
+    printf("Enter the input:\n");
+    yylex();
+    return 0;
+}
+
+int yywrap()
+{
+    return 1;
+}
+
+/*
+Execution Steps:
+
+1. Save the program as lexer.l
+
+2. Generate lex.yy.c file:
+   lex lexer.l
+
+3. Compile the generated C file:
+   gcc lex.yy.c -o lexer -ll
+
+4. Run the executable:
+   ./lexer
+
+5. Enter input like:
+   int a = 10;
+
+6. Output:
+   Datatype : int
+   Identifier : a
+   Operator : =
+   Number : 10
+   Special Symbol : ;
+
+(Alternative in some systems use flex instead of lex)
+   flex lexer.l
+   gcc lex.yy.c -o lexer -lfl
+   ./lexer
+*/

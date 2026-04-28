@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+char *keywords[] = {"int","float","if","else","while","return"};
+
+int isKeyword(char *str) {
+    for(int i=0;i<6;i++) {
+        if(strcmp(str, keywords[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+int main() {
+    char input[100], token[100];
+    int i = 0, j = 0;
+
+    printf("Enter input: ");
+    scanf("%[^\n]", input);
+
+    while(input[i] != '\0') {
+
+        if(isspace(input[i])) {
+            i++;
+            continue;
+        }
+
+        // Number
+        if(isdigit(input[i])) {
+            j = 0;
+            while(isdigit(input[i])) {
+                token[j++] = input[i++];
+            }
+            token[j] = '\0';
+            printf("Number: %s\n", token);
+        }
+
+        // Identifier / Keyword
+        else if(isalpha(input[i])) {
+            j = 0;
+            while(isalnum(input[i])) {
+                token[j++] = input[i++];
+            }
+            token[j] = '\0';
+
+            if(isKeyword(token))
+                printf("Keyword: %s\n", token);
+            else
+                printf("Identifier: %s\n", token);
+        }
+
+        // Operator
+        else if(strchr("+-*/=", input[i])) {
+            printf("Operator: %c\n", input[i]);
+            i++;
+        }
+
+        // Special symbols
+        else if(strchr("(){};,", input[i])) {
+            printf("Special Symbol: %c\n", input[i]);
+            i++;
+        }
+
+        else {
+            printf("Unknown: %c\n", input[i]);
+            i++;
+        }
+    }
+
+    return 0;
+}

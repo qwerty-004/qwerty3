@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+
+char input[100];
+int i = 0;
+
+// Function declarations
+void E();
+void Eprime();
+void T();
+void Tprime();
+void F();
+
+// E → T E'
+void E() {
+    T();
+    Eprime();
+}
+
+// E' → + T E' | ε
+void Eprime() {
+    if(input[i] == '+') {
+        i++;
+        T();
+        Eprime();
+    }
+}
+
+// T → F T'
+void T() {
+    F();
+    Tprime();
+}
+
+// T' → * F T' | ε
+void Tprime() {
+    if(input[i] == '*') {
+        i++;
+        F();
+        Tprime();
+    }
+}
+
+// F → (E) | id
+void F() {
+    if(input[i] == '(') {
+        i++;
+        E();
+        if(input[i] == ')')
+            i++;
+        else {
+            printf("Error: Missing )\n");
+        }
+    }
+    else if(input[i] == 'i' && input[i+1] == 'd') {
+        i += 2;
+    }
+    else {
+        printf("Error: Invalid symbol\n");
+    }
+}
+
+int main() {
+    printf("Enter input string: ");
+    scanf("%s", input);
+
+    E();
+
+    if(input[i] == '\0') {
+        printf("String is Accepted\n");
+    } else {
+        printf("String is Rejected\n");
+    }
+
+    return 0;
+}
