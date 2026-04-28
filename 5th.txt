@@ -55,3 +55,41 @@ int yyerror(const char *s) {
 int yywrap() {
     return 1;
 }
+
+/*
+Execution Steps:
+
+1. Save this file as parser.y
+2. Save Lex program as lexer.l
+
+3. Generate YACC files:
+   yacc -d parser.y
+
+4. Generate Lex file:
+   lex lexer.l
+
+5. Compile:
+   gcc y.tab.c lex.yy.c -o parser -ll
+
+6. Run:
+   ./parser
+
+7. Sample Input:
+   a+b
+
+8. Sample Output:
+   F -> id
+   T -> F
+   F -> id
+   T -> F
+   E' -> epsilon
+   E' -> + T E'
+   E -> T E'
+   Parsing Successful!
+
+(Alternative with flex/bison)
+   bison -d parser.y
+   flex lexer.l
+   gcc parser.tab.c lex.yy.c -o parser -lfl
+   ./parser
+*/
